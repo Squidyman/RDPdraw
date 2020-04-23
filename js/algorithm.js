@@ -15,8 +15,9 @@ function InitThis() {
   ctx = document.getElementById('myCanvas').getContext("2d");
 
   $('#myCanvas').mousedown(function(e) {
-    lineList.push(JSON.parse(JSON.stringify(line)));
     activeLine++;
+    lineList.push(JSON.parse(JSON.stringify(line)));
+
     mousePressed = true;
     Draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, false);
   });
@@ -116,15 +117,21 @@ function scalarProjection(p, a, b) {
   return normalPoint;
 }
 
+function setup() {
+
+}
+
+$(document).ready(function(){
+
 $('#run').on('click', function(){
-//   let epsilon = 0;
+  let epsilon = 0;
 // alert("Hello! I am an alert box!!");
-//   allPoints = [];
-//   let points = lineList[0].points; 
-//   console.log(lineList);
-//   for(let i = 0; i < points.length; i++){
-//      allPoints.push(createVector(points[i][0], points[i][1]));
-//   }
+  allPoints = [];
+  let points = lineList[0].points; 
+  console.log(lineList);
+  for(let i = 0; i < points.length; i++){
+     allPoints.push(createVector(points[i][0], points[i][1]));
+  }
   
 //     background(0);
 
@@ -166,4 +173,5 @@ $('#run').on('click', function(){
 //   text('epsilon: ' + nf(epsilon, 2, 2), 20, 25);
 //   text('n: ' + rdpPoints.length, 20, 50);
   
+})
 })
