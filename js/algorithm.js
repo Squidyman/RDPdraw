@@ -1,10 +1,12 @@
 var mousePressed = false;
 var lastX, lastY;
+var lastXone, lastYone;
 var ctx;
 var lineList = [];
 var activeLine = -1;
+var epsilon = 5;
 
-var line = {
+const line = {
   points: [],
   color: 'blue',
   lineWidth: 9
@@ -124,54 +126,41 @@ function setup() {
 $(document).ready(function(){
 
 $('#run').on('click', function(){
-  let epsilon = 0;
 // alert("Hello! I am an alert box!!");
-  allPoints = [];
-  let points = lineList[0].points; 
-  console.log(lineList);
-  for(let i = 0; i < points.length; i++){
-     allPoints.push(createVector(points[i][0], points[i][1]));
-  }
-  
-//     background(0);
+ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-//   const rdpPoints = [];
+  for (let i = 0; i < lineList.length; i++) {
+    allPoints = [];
+    let points = lineList[i].points; 
+    console.log(lineList);
+    for(let i = 0; i < points.length; i++){
+      allPoints.push(createVector(points[i][0], points[i][1]));
+    }
+    const rdpPoints = [];
 
-//   const total = allPoints.length;
-//   const start = allPoints[0];
-//   const end = allPoints[total - 1];
-//   rdpPoints.push(start);
-//   rdp(0, total - 1, allPoints, rdpPoints);
-//   rdpPoints.push(end);
-//   console.log(allPoints.size(), rdpPoints.length);
-  
-//   epsilon += 0.01;
-//   if (epsilon > 100) {
-//     epsilon = 0;
-//   }
-  
-//     stroke(255, 0, 255);
-//   strokeWeight(4);
-//   noFill();
-//   beginShape();
-//   for (let v of allPoints) {
-//     vertex(v.x, v.y);
-//   }
-//   endShape();
-  
-//     //translate(0, 20);
-//   stroke(255);
-//   strokeWeight(2);
-//   beginShape();
-//   for (let v of rdpPoints) {
-//     vertex(v.x, v.y);
-//   }
-//   endShape();
-//   fill(255);
-//   noStroke();
-//   textSize(24);
-//   text('epsilon: ' + nf(epsilon, 2, 2), 20, 25);
-//   text('n: ' + rdpPoints.length, 20, 50);
-  
+    const total = allPoints.length;
+    const start = allPoints[0];
+    const end = allPoints[total - 1];
+    rdpPoints.push(start);
+    rdp(0, total - 1, allPoints, rdpPoints);
+    rdpPoints.push(end);
+
+
+    for (let v of rdpPoints) {
+      // console.log(v.x, v.y)
+      ctx.beginPath();
+      ctx.strokeStyle = "black"
+      ctx.lineWidth = 3
+      ctx.lineJoin = "round";
+      ctx.moveTo(lastXone, lastYone);
+      ctx.lineTo(v.x, v.y);
+      lastXone = v.x;
+      lastYone = v.y;
+      ctx.closePath();
+      ctx.stroke();
+    }
+    lastXone = undefined
+    lastYone = undefined
+}
 })
 })
