@@ -1,13 +1,69 @@
-const allPoints = [];
-let epsilon = 0;
+var mousePressed = false;
+var lastX, lastY;
+var ctx;
+var lineList = [];
+var activeLine = -1;
 
-function setup() {
-  createCanvas(600, 400);
-  for (let x = 0; x < width; x++) {
-    const xval = map(x, 0, width, 0, 5);
-    const yval = exp(-xval) * cos(TWO_PI * xval);
-    const y = map(yval, -1, 1, height, 0);
-    allPoints.push(createVector(x, y));
+var line = {
+  points: [],
+  color: 'blue',
+  lineWidth: 9
+}
+
+function InitThis() {
+  ctx = document.getElementById('myCanvas').getContext("2d");
+
+  $('#myCanvas').mousedown(function(e) {
+    lineList.push(JSON.parse(JSON.stringify(line)));
+    activeLine++;
+    mousePressed = true;
+    Draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, false);
+  });
+
+  $('#myCanvas').mousemove(function(e) {
+    if (mousePressed) {
+      Draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, true);
+    }
+  });
+
+  $('#myCanvas').mouseup(function(e) {
+    mousePressed = false;
+    console.log(lineList[activeLine]);
+  });
+  $('#myCanvas').mouseleave(function(e) {
+    mousePressed = false;
+  });
+}
+
+function Draw(x, y, isDown) {
+  if (isDown) {
+    ctx.beginPath();
+    ctx.strokeStyle = $('#selColor').val();
+    ctx.lineWidth = $('#selWidth').val();
+    ctx.lineJoin = "round";
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.closePath();
+    ctx.stroke();
+    lineList[activeLine].points.push([x, y]);
+    lineList[activeLine].color = ctx.strokeStyle;
+    lineList[activeLine].lineWidth = ctx.lineWidth;
+  }
+  lastX = x;
+  lastY = y;
+}
+
+function clearArea() {
+  // Use the identity matrix while clearing the canvas
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  lineList = [];
+  activeLine = -1;
+  
+  for(let i = 0; i <= activeLine; i++){
+    let line = lineList[i]
+    
+    console.log(line)
   }
 }
 
@@ -58,8 +114,24 @@ function scalarProjection(p, a, b) {
   return normalPoint;
 }
 
-function draw() {
-  background(0);
+function runAlgorithm() {
+  
+}
+
+  
+$(document).ready(function(){
+
+$('#run').on('click', function(){
+  let epsilon = 0;
+
+  allPoints = [];
+  let points = lineList[0].points; 
+  // console.log(lineList);
+  for(let i = 0; i < points.length; i++){
+     allPoints.push(createVector(points[i][0], points[i][1]));
+  }
+  
+    background(0);
 
   const rdpPoints = [];
 
@@ -69,15 +141,14 @@ function draw() {
   rdpPoints.push(start);
   rdp(0, total - 1, allPoints, rdpPoints);
   rdpPoints.push(end);
-  //console.log(allPoints.size(), rdpPoints.length);
-
+  console.log(allPoints.size(), rdpPoints.length);
+  
   epsilon += 0.01;
   if (epsilon > 100) {
     epsilon = 0;
   }
-
-  //translate(0, -10);
-  stroke(255, 0, 255);
+  
+    stroke(255, 0, 255);
   strokeWeight(4);
   noFill();
   beginShape();
@@ -85,8 +156,8 @@ function draw() {
     vertex(v.x, v.y);
   }
   endShape();
-
-  //translate(0, 20);
+  
+    //translate(0, 20);
   stroke(255);
   strokeWeight(2);
   beginShape();
@@ -99,4 +170,7 @@ function draw() {
   textSize(24);
   text('epsilon: ' + nf(epsilon, 2, 2), 20, 25);
   text('n: ' + rdpPoints.length, 20, 50);
-}
+  
+})
+  
+})
