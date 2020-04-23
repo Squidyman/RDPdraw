@@ -11,6 +11,7 @@ var line = {
 }
 
 function InitThis() {
+  
   ctx = document.getElementById('myCanvas').getContext("2d");
 
   $('#myCanvas').mousedown(function(e) {
@@ -65,6 +66,7 @@ function clearArea() {
     
     console.log(line)
   }
+  
 }
 
 function rdp(startIndex, endIndex, allPoints, rdpPoints) {
@@ -114,63 +116,54 @@ function scalarProjection(p, a, b) {
   return normalPoint;
 }
 
-function runAlgorithm() {
-  
-}
-
-  
-$(document).ready(function(){
-
 $('#run').on('click', function(){
-  let epsilon = 0;
+//   let epsilon = 0;
+// alert("Hello! I am an alert box!!");
+//   allPoints = [];
+//   let points = lineList[0].points; 
+//   console.log(lineList);
+//   for(let i = 0; i < points.length; i++){
+//      allPoints.push(createVector(points[i][0], points[i][1]));
+//   }
+  
+//     background(0);
 
-  allPoints = [];
-  let points = lineList[0].points; 
-  // console.log(lineList);
-  for(let i = 0; i < points.length; i++){
-     allPoints.push(createVector(points[i][0], points[i][1]));
-  }
-  
-    background(0);
+//   const rdpPoints = [];
 
-  const rdpPoints = [];
-
-  const total = allPoints.length;
-  const start = allPoints[0];
-  const end = allPoints[total - 1];
-  rdpPoints.push(start);
-  rdp(0, total - 1, allPoints, rdpPoints);
-  rdpPoints.push(end);
-  console.log(allPoints.size(), rdpPoints.length);
+//   const total = allPoints.length;
+//   const start = allPoints[0];
+//   const end = allPoints[total - 1];
+//   rdpPoints.push(start);
+//   rdp(0, total - 1, allPoints, rdpPoints);
+//   rdpPoints.push(end);
+//   console.log(allPoints.size(), rdpPoints.length);
   
-  epsilon += 0.01;
-  if (epsilon > 100) {
-    epsilon = 0;
-  }
+//   epsilon += 0.01;
+//   if (epsilon > 100) {
+//     epsilon = 0;
+//   }
   
-    stroke(255, 0, 255);
-  strokeWeight(4);
-  noFill();
-  beginShape();
-  for (let v of allPoints) {
-    vertex(v.x, v.y);
-  }
-  endShape();
+//     stroke(255, 0, 255);
+//   strokeWeight(4);
+//   noFill();
+//   beginShape();
+//   for (let v of allPoints) {
+//     vertex(v.x, v.y);
+//   }
+//   endShape();
   
-    //translate(0, 20);
-  stroke(255);
-  strokeWeight(2);
-  beginShape();
-  for (let v of rdpPoints) {
-    vertex(v.x, v.y);
-  }
-  endShape();
-  fill(255);
-  noStroke();
-  textSize(24);
-  text('epsilon: ' + nf(epsilon, 2, 2), 20, 25);
-  text('n: ' + rdpPoints.length, 20, 50);
-  
-})
+//     //translate(0, 20);
+//   stroke(255);
+//   strokeWeight(2);
+//   beginShape();
+//   for (let v of rdpPoints) {
+//     vertex(v.x, v.y);
+//   }
+//   endShape();
+//   fill(255);
+//   noStroke();
+//   textSize(24);
+//   text('epsilon: ' + nf(epsilon, 2, 2), 20, 25);
+//   text('n: ' + rdpPoints.length, 20, 50);
   
 })
